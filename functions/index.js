@@ -32,3 +32,13 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
       return snapshot.ref.parent.child('uppercase').set(uppercase);
     });
 
+
+// with promise
+// Always change the value of "/hello" to "world!"
+exports.hello = functions.database.ref('/hello').onWrite(event => {
+    // set() returns a promise. We keep the function alive by returning it.
+    // eslint-disable-next-line promise/always-return
+    return event.data.ref.set('world!').then(() => {
+      console.log('Write succeeded!');
+    });
+  });
